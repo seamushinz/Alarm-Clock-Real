@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+let customLightGray = '#EDEDED';
+
 function getDynamicStyles(isDarkMode: boolean) {
   return StyleSheet.create({
     container: {
@@ -44,10 +46,13 @@ function getDynamicStyles(isDarkMode: boolean) {
       flexDirection: 'row',
       justifyContent: 'space-around',
       padding: 10,
+      backgroundColor: isDarkMode ? '#333' : `${customLightGray}`,
+      borderRadius: 16,
+      margin: 24,
     },
     dayButton: {
-      borderWidth: 1,
-      borderColor: isDarkMode ? 'lightgray' : 'gray',
+      borderWidth: 0,
+      borderColor: isDarkMode ? `${customLightGray}` : 'gray',
       borderRadius: 50,
       width: 40,
       height: 40,
@@ -60,14 +65,16 @@ function getDynamicStyles(isDarkMode: boolean) {
     },
     dayText: {
       color: isDarkMode ? 'green' : 'black',
+      fontWeight : 'bold',
+      fontSize: 22,
     },
     dayTextSelected: {
       color: isDarkMode ? 'green' : 'white',
     },
 
     touchable: {
-      backgroundColor: isDarkMode ? '#444' : 'lightgray',
-      borderColor: isDarkMode ? 'lightgray' : 'gray',
+      backgroundColor: isDarkMode ? '#444' : `${customLightGray}`,
+      borderColor: isDarkMode ? `${customLightGray}` : 'gray',
       flex: 1,
     },
     placeholder: {
@@ -83,7 +90,7 @@ function getDynamicStyles(isDarkMode: boolean) {
       padding: 20,
       marginVertical: 10,
       borderRadius: 8,
-      borderColor: isDarkMode ? 'lightgray' : 'gray',
+      borderColor: isDarkMode ? `${customLightGray}` : 'gray',
       elevation: 3,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -101,7 +108,7 @@ function getDynamicStyles(isDarkMode: boolean) {
     },
     time: {
       fontSize: 24,
-      color: isDarkMode ? 'lightgray' : 'black',
+      color: isDarkMode ? `${customLightGray}` : 'black',
     },
     controls: {
       alignItems: 'flex-end',
