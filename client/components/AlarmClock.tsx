@@ -97,6 +97,7 @@ function AlarmClock({ onAlarmSave, editingAlarm }: AlarmClockProps) {
   });
   const [isSnoozeEnabled, setIsSnoozeEnabled] = useState(true);
   const [isAlarmSettingVisible, setAlarmSettingVisible] = useState(false);
+  const [isAlarmSoundPickerVisible, setAlarmSoundPickerVisible] = useState(false);
   const isEditing = editingAlarm != null;
   const dynamicStyles = getDynamicStyles(isDarkMode);
 
@@ -121,12 +122,26 @@ function AlarmClock({ onAlarmSave, editingAlarm }: AlarmClockProps) {
     closeAlarmSetting();
   };
 
+  const saveSoundPicker = () => {
+    // Save the sound pick that was picked somehow
+
+    closeAlarmSoundPicker();
+  }
+
   const openAlarmSetting = () => {
     setAlarmSettingVisible(true);
   };
 
   const closeAlarmSetting = () => {
     setAlarmSettingVisible(false);
+  };
+
+  const openAlarmSoundPicker = () => {
+    setAlarmSoundPickerVisible(true);
+  };
+
+  const closeAlarmSoundPicker = () => {
+    setAlarmSoundPickerVisible(false);
   };
 
   const dynamicStylesLocal = {
@@ -207,23 +222,65 @@ const Stack = createNativeStackNavigator();
       >
         
         <SafeAreaView style={[dynamicStyles.modalContainer, { flex: 1, padding: 20 }]}>
+          <View style={[dynamicStyles.topNavBar, { marginBottom: 20 }]}>
+            <TouchableOpacity onPress={closeAlarmSetting}>
+              <Text style={[dynamicStyles.topBarText, { color: dynamicStylesLocal.color }]}>Cancel</Text>
+            </TouchableOpacity>
+            <Text style={[dynamicStyles.topBarTitle, { color: dynamicStylesLocal.color, fontWeight: 'bold' }]}>
+              {isEditing ? 'Edit Alarm' : 'Add Alarm'}
+            </Text>
+            <TouchableOpacity onPress={saveAlarm}>
+              <Text style={[dynamicStyles.topBarText, { color: dynamicStylesLocal.color }]}>Save</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ marginVertical: 20 }}>
+            {Platform.OS === 'ios' ? (
+              <TimePickerIOS alarmTime={alarmTime} setAlarmTime={setAlarmTime} />
+            ) : (
+              <TimePickerAndroid
+                isPickerVisible={isDatePickerVisible}
+                setPickerVisible={setDatePickerVisibility}
+                alarmTime={alarmTime}
+                setAlarmTime={setAlarmTime}
+              />
+            )}
+          </View>
+
+          <DayPicker days={days} toggleDay={toggleDay} />
+          <AlarmNameInput alarmName={alarmName} setAlarmName={setAlarmName} />
+          
+          <TouchableOpacity onPress={openAlarmSoundPicker} style={[styles.button, { marginTop: 20 }]}>
+            <Text style={[textStyles.buttonText, { color: "white" }]}>Select Sound</Text>
+          </TouchableOpacity>
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={isAlarmSoundPickerVisible}
+            onRequestClose={closeAlarmSoundPicker}
+            presentationStyle='pageSheet'
+          >
+            <SafeAreaView style={[dynamicStyles.modalContainer, { flex: 1, padding: 20 }]}>
             <View style={[dynamicStyles.topNavBar, { marginBottom: 20 }]}>
-              <TouchableOpacity onPress={closeAlarmSetting}>
+              <TouchableOpacity onPress={closeAlarmSoundPicker}>
                 <Text style={[dynamicStyles.topBarText, { color: dynamicStylesLocal.color }]}>Cancel</Text>
               </TouchableOpacity>
               <Text style={[dynamicStyles.topBarTitle, { color: dynamicStylesLocal.color, fontWeight: 'bold' }]}>
-                {isEditing ? 'Edit Alarm' : 'Add Alarm'}
+                {isEditing ? 'Edit Sound' : 'Add Sound'}
               </Text>
-              <TouchableOpacity onPress={saveAlarm}>
+              <TouchableOpacity onPress={saveSoundPicker}>
                 <Text style={[dynamicStyles.topBarText, { color: dynamicStylesLocal.color }]}>Save</Text>
               </TouchableOpacity>
             </View>
-          <NavigationContainer independent={true}>
-            <Stack.Navigator initialRouteName='AlarmClockCreationSettings'>
-              <Stack.Screen name="AlarmClockCreationSettings" component={AlarmClockCreationSettings} initialParams={onAlarmSave : , }/>
-              <Stack.Screen name="SoundPicker" component={SoundPicker} />
-            </Stack.Navigator>
-          </NavigationContainer>
+            <SoundPicker /* pass any props needed */ />
+            </SafeAreaView>
+          </Modal>
+          <SnoozeSwitch isSnoozeEnabled={isSnoozeEnabled} setIsSnoozeEnabled={setIsSnoozeEnabled} />
+
+          <View style={{ marginTop: 20 }}>
+            <Button title="Schedule Notification" onPress={scheduleNotification} />
+          </View>
         </SafeAreaView>
       </Modal>
     </View>

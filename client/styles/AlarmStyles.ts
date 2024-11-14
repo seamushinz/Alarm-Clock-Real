@@ -44,11 +44,11 @@ function getDynamicStyles(isDarkMode: boolean) {
     },
     dayContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       padding: 10,
       backgroundColor: isDarkMode ? '#333' : `${customLightGray}`,
       borderRadius: 16,
-      margin: 24,
+      margin: 16,
     },
     dayButton: {
       borderWidth: 0,
@@ -58,7 +58,7 @@ function getDynamicStyles(isDarkMode: boolean) {
       height: 40,
       justifyContent: 'center',
       alignItems: 'center',
-      margin: 5,
+      padding: 5,
     },
     dayButtonSelected: {
       backgroundColor: isDarkMode ? 'lightgrey' : 'green',
@@ -119,6 +119,12 @@ function getDynamicStyles(isDarkMode: boolean) {
     },
     deleteButtonText: {
       color: 'red',
+    },
+    textList: {
+      fontSize: 24,
+      margin: 10,
+      borderBottomColor: isDarkMode ? 'white' : 'black',
+      borderBottomWidth: 1
     },
   });
 }
