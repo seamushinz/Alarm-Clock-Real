@@ -14,7 +14,7 @@ interface AlarmCardProps {
   onDelete: (id: string) => void;
 }
 
-const AlarmCard: React.FC<AlarmCardProps> = ({ alarm, onToggleAlarm, onDelete }) => {
+const AlarmCard: React.FC<AlarmCardProps> = ({ alarm, onToggleAlarm, onDelete } : AlarmCardProps) => {
   const { isDarkMode } = useDarkMode();
   const dynamicStyles = getDynamicStyles(isDarkMode);
 
